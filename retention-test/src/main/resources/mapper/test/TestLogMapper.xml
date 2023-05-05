@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.retention.test.mapper.TestLogMapper">
+    
+    <resultMap type="TestLog" id="TestLogResult">
+        <result property="id"    column="id"    />
+        <result property="level"    column="level"    />
+        <result property="message"    column="message"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectTestLogVo">
+        select id, level, message, create_time from test_log
+    </sql>
+
+    <select id="selectTestLogList" parameterType="TestLog" resultMap="TestLogResult">
+        <include refid="selectTestLogVo"/>
+        <where>  
+            <if test="level != null  and level != ''"> and level = #{level}</if>
+            <if test="message != null  and message != ''"> and message = #{message}</if>
+        </where>
+    </select>
+    
+    <select id="selectTestLogById" parameterType="Long" resultMap="TestLogResult">
+        <include refid="selectTestLogVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTestLog" parameterType="TestLog" useGeneratedKeys="true" keyProperty="id">
+        insert into test_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="level != null and level != ''">level,</if>
+            <if test="message != null and message != ''">message,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="level != null and level != ''">#{level},</if>
+            <if test="message != null and message != ''">#{message},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTestLog" parameterType="TestLog">
+        update test_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="level != null and level != ''">level = #{level},</if>
+            <if test="message != null and message != ''">message = #{message},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTestLogById" parameterType="Long">
+        delete from test_log where id = #{id}
+    </delete>
+
+    <delete id="deleteTestLogByIds" parameterType="String">
+        delete from test_log where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

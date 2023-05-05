@@ -1,4 +1,4 @@
-package com.retention.test;
+package com.retention.test.util;
 
 import ch.qos.logback.core.util.FileUtil;
 import org.yaml.snakeyaml.Yaml;
@@ -15,11 +15,6 @@ public class CustomConfigurationController {
 
     private static Yaml yaml = new Yaml();
 
-    public static void getValue() {
-        String value = obtainConfigurationFileParameterValues("光衰.H3C.转译.GE");
-        System.err.println(value);
-    }
-
     public static String obtainConfigurationFileParameterValues(String key) {
         String value = null;
         try {
@@ -32,6 +27,7 @@ public class CustomConfigurationController {
         } catch (FileNotFoundException | URISyntaxException e) {
             e.printStackTrace();
         }
+        System.err.println(value);
         return value;
     }
 
