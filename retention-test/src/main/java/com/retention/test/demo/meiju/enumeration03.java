@@ -1,4 +1,4 @@
-package com.retention.test.demo;
+package com.retention.test.demo.meiju;
 
 /**
  * 枚举测试类03
